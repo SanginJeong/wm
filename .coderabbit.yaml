@@ -1,0 +1,113 @@
+language: ko-KR
+
+reviews:
+  profile: chill
+  request_changes_workflow: false
+  high_level_summary: true
+  poem: false
+  review_status: true
+  auto_review:
+    enabled: true
+    drafts: false
+    base_branches:
+      - main
+      - develop
+
+  path_instructions:
+    # ── 페이지 ──────────────────────────────────────────────────────────────
+    - path: "apps/web/src/pages/**"
+      instructions: |
+        페이지 컴포넌트입니다. CONVENTIONS.md 기준으로 확인:
+        - 파일명: PascalCase.page.tsx 형식 (예: CategoryPage.tsx)
+        - 컴포넌트 함수는 화살표 함수 + default export 사용
+        - 데이터 페칭 로직이 페이지에 직접 없고 features/ 훅을 사용하는지 확인
+        - Props 타입명은 컴포넌트명 + Props 접미사 (예: CategoryPageProps)
+
+    # ── 도메인 기능 모듈 ──────────────────────────────────────────────────
+    - path: "apps/web/src/features/**"
+      instructions: |
+        도메인 기능 모듈입니다. CONVENTIONS.md 기준으로 확인:
+        - 서버 상태는 반드시 TanStack Query로만 관리
+        - 클라이언트 상태는 Zustand store를 통하는지 확인
+        - 컴포넌트 내부에서 직접 axios 호출 금지 (packages/api 경유 필수)
+        - 컴포넌트 함수는 화살표 함수 + default export
+        - Props 타입명: ComponentNameProps
+        - 이벤트 핸들러 (내부): handle + 행위 (handleSubmit, handleQuantityChange)
+        - 이벤트 Props: on + 행위 (onAddToCart, onClose)
+        - Boolean 변수: is / has / can / should 접두사 (isLoading, hasDiscount)
+        - 훅 파일명: camelCase.ts, use 접두사 필수
+
+    # ── Zustand 스토어 ────────────────────────────────────────────────────
+    - path: "apps/web/src/features/**/stores/**"
+      instructions: |
+        Zustand 스토어입니다. CONVENTIONS.md 기준으로 확인:
+        - 파일명: camelCase.store.ts
+        - state 필드: camelCase 명사 (items, totalPrice)
+        - actions: camelCase 동사로 시작 (addItem, removeItem, clearCart)
+        - localStorage persist 사용 시 name 키는 kebab-case (예: 'cart-storage')
+        - 스토어는 useXxxStore 형태로 export
+
+    # ── MSW 핸들러 ────────────────────────────────────────────────────────
+    - path: "apps/web/src/mocks/**"
+      instructions: |
+        MSW 핸들러입니다. 개발/테스트 환경 전용. CONVENTIONS.md 기준으로 확인:
+        - 파일명: camelCase.handler.ts (예: product.handler.ts)
+        - 핸들러 배열명: camelCaseHandlers (예: productHandlers)
+        - 실제 API 응답 구조와 일치하는 mock 데이터인지 확인
+
+    # ── E2E 테스트 ────────────────────────────────────────────────────────
+    - path: "apps/web/e2e/**"
+      instructions: |
+        Playwright E2E 테스트입니다. CONVENTIONS.md 기준으로 확인:
+        - 파일명: kebab-case.spec.ts (예: checkout.spec.ts)
+        - 하드코딩된 sleep/waitForTimeout 대신 locator 기반 wait 사용
+        - page.waitForSelector 대신 expect(locator).toBeVisible() 권장
+
+    # ── API 레이어 ────────────────────────────────────────────────────────
+    - path: "packages/api/src/**"
+      instructions: |
+        API 레이어입니다. 모든 axios 호출은 여기서만 이루어져야 합니다. CONVENTIONS.md 기준:
+        - 파일명: camelCase.api.ts (예: product.api.ts)
+        - 함수명: 동사 + 명사 CRUD 기준
+          - 조회: getXxx / getXxxById / getXxxList
+          - 생성: createXxx
+          - 수정: updateXxx
+          - 삭제: deleteXxx
+        - 반드시 반환 타입 명시, packages/types의 Zod 스키마 타입 사용
+        - client.ts 인터셉터를 우회하는 직접 axios 인스턴스 생성 금지
+
+    # ── 타입 / Zod 스키마 ─────────────────────────────────────────────────
+    - path: "packages/types/src/**"
+      instructions: |
+        공용 타입 및 Zod 스키마입니다. CONVENTIONS.md 기준으로 확인:
+        - 파일명: camelCase.types.ts (예: product.types.ts)
+        - 스키마명: PascalCase + Schema 접미사 (예: ProductSchema)
+        - 타입은 z.infer로 추론, Schema 접미사 제거 (예: type Product = z.infer<typeof ProductSchema>)
+        - 목록 응답: PascalCaseListSchema + type PascalCaseList
+        - any 타입 사용 금지
+        - 새 타입 추가 시 반드시 Zod 스키마도 함께 작성
+
+    # ── 공용 훅 ──────────────────────────────────────────────────────────
+    - path: "packages/hooks/src/**"
+      instructions: |
+        공용 커스텀 훅입니다. CONVENTIONS.md 기준으로 확인:
+        - 파일명: camelCase.ts, use 접두사 필수 (예: useDebounce.ts)
+        - 반환값이 단일이면 값 직접 반환, 여러 개면 객체로 반환
+        - TanStack Query에 의존하는 훅은 features/ 하위에 위치시킬 것
+
+    # ── 공용 UI 컴포넌트 ─────────────────────────────────────────────────
+    - path: "packages/ui/src/**"
+      instructions: |
+        shadcn/ui 기반 공용 컴포넌트입니다. CONVENTIONS.md 기준으로 확인:
+        - 파일명: PascalCase.tsx (예: Button.tsx)
+        - 컴포넌트 함수는 화살표 함수 + default export
+        - Props 타입명: ComponentNameProps
+        - class-variance-authority (cva)로 variant 관리
+        - tailwind-merge(cn) 사용해 className 병합
+
+  finishing_touches:
+    docstrings:
+      enabled: false
+
+chat:
+  auto_reply: true

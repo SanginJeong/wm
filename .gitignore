@@ -1,0 +1,27 @@
+node_modules
+dist
+.env.local
+.env.*.local
+*.env
+.env
+# pnpm
+.pnpm-store
+
+# Vite
+*.local
+
+# Playwright
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
+
+# Sentry
+.sentryclirc
+
+# OS
+.DS_Store
+Thumbs.db
+
+# 로컬 전용 문서
+CONVENTIONS.md

@@ -1,0 +1,18 @@
+{
+  "name": "@wondermall/api",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@wondermall/types": "workspace:*",
+    "axios": "^1.7.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  }
+}
