@@ -10,8 +10,8 @@
     "test:ui": "pnpm --filter=@wondermall/web test:ui",
     "test:headed": "pnpm --filter=@wondermall/web test:headed",
     "test:report": "pnpm --filter=@wondermall/web test:report",
-    "lint": "pnpm --recursive lint",
-    "lint:fix": "pnpm --recursive lint:fix",
+    "lint": "pnpm --filter=@wondermall/web lint",
+    "lint:fix": "pnpm --filter=@wondermall/web lint:fix",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
     "typecheck": "pnpm --recursive typecheck",
     "prepare": "husky"
@@ -25,11 +25,19 @@
     "typescript": "^5.0.0"
   },
   "lint-staged": {
-    "*.{ts,tsx,js,jsx}": ["eslint --fix", "prettier --write"],
-    "*.{json,md,css}": ["prettier --write"]
+    "*.{ts,tsx,js,jsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md,css}": [
+      "prettier --write"
+    ]
   },
   "pnpm": {
-    "onlyBuiltDependencies": ["esbuild", "msw"]
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "msw"
+    ]
   },
   "engines": {
     "node": ">=20.0.0",
