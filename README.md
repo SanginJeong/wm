@@ -273,8 +273,6 @@ VITE_SHOPIFY_STOREFRONT_TOKEN=
 
 ```
 
-> ⚠️ `.env.local`은 절대 커밋하지 마세요. `.gitignore`에 포함되어 있습니다.
-
 ---
 
 ## 🏗 Architecture
@@ -429,6 +427,7 @@ E2E 테스트     kebab-case.spec.ts     checkout.spec.ts
 ## 🗓 Roadmap
 
 - [x] pnpm Monorepo 프로젝트 셋업
+- [x] 라우팅 정의
 - [ ] 소셜 로그인 (카카오·구글 OAuth)
 - [ ] 상품 목록·필터·무한스크롤 (Algolia + @tanstack/virtual)
 - [ ] 상품 상세 (이미지 갤러리, 옵션 선택 RHF+Zod)
