@@ -462,7 +462,6 @@ E2E 테스트     kebab-case.spec.ts     checkout.spec.ts
   [ ]  쿠폰 & 포인트 시스템
   [ ]  멤버십 등급 (일반·실버·골드·VIP)
   [ ]  브랜드관 페이지
-  [ ]  Storybook 컴포넌트 문서화
 
   [ ]  AR Try-On (가상 착용 시뮬레이션)
   [ ]  라이브 쇼핑 연동
