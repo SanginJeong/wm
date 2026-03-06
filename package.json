@@ -13,30 +13,17 @@
     "lint": "pnpm --filter=@wondermall/web lint",
     "lint:fix": "pnpm --filter=@wondermall/web lint:fix",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
-    "typecheck": "pnpm --recursive typecheck",
-    "prepare": "husky"
+    "typecheck": "pnpm --recursive typecheck"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.0.0",
     "@commitlint/config-conventional": "^19.0.0",
-    "husky": "^9.0.0",
-    "lint-staged": "^15.0.0",
     "prettier": "^3.0.0",
     "typescript": "^5.0.0"
   },
-  "lint-staged": {
-    "*.{ts,tsx,js,jsx}": [
-      "eslint --fix",
-      "prettier --write"
-    ],
-    "*.{json,md,css}": [
-      "prettier --write"
-    ]
-  },
   "pnpm": {
     "onlyBuiltDependencies": [
-      "esbuild",
-      "msw"
+      "esbuild"
     ]
   },
   "engines": {
