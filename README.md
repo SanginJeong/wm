@@ -430,7 +430,6 @@ perf: 상품 목록 @tanstack/virtual 적용
 API 함수       camelCase.api.ts       product.api.ts
 타입/스키마     camelCase.types.ts     product.types.ts
 E2E 테스트     kebab-case.spec.ts     checkout.spec.ts
-MSW 핸들러     camelCase.handler.ts   product.handler.ts
 ```
 
 ### 핵심 코딩 규칙
@@ -448,31 +447,27 @@ MSW 핸들러     camelCase.handler.ts   product.handler.ts
 ## 🗓 Roadmap
 
 ```
-2026 Q2  ── Phase 1 · MVP
-  □  pnpm Monorepo 프로젝트 셋업
-  □  MSW 핸들러 기반 개발 환경 구성
-  □  소셜 로그인 (카카오·구글 OAuth)
-  □  상품 목록·필터·무한스크롤 (Algolia + @tanstack/virtual)
-  □  상품 상세 (이미지 갤러리, 옵션 선택 RHF+Zod)
-  □  장바구니 (Zustand cartStore persist)
-  □  주문서 + 결제 (토스페이먼츠 SDK)
-  □  마이페이지 (주문내역·배송 트래킹·찜목록)
-  □  Playwright E2E — 로그인·구매·마이페이지
-  □  GitHub Actions CI/CD → AWS S3+CloudFront 배포
+  [x]  pnpm Monorepo 프로젝트 셋업
+  [ ]  소셜 로그인 (카카오·구글 OAuth)
+  [ ]  상품 목록·필터·무한스크롤 (Algolia + @tanstack/virtual)
+  [ ]  상품 상세 (이미지 갤러리, 옵션 선택 RHF+Zod)
+  [ ]  장바구니 (Zustand cartStore persist)
+  [ ]  주문서 + 결제 (토스페이먼츠 SDK)
+  [ ]  마이페이지 (주문내역·배송 트래킹·찜목록)
+  [ ]  Playwright E2E — 로그인·구매·마이페이지
+  [x]  GitHub Actions CI/CD → AWS S3+CloudFront 배포
 
-2026 Q3  ── Phase 2 · Growth
-  □  AI 개인화 추천 피드 (오픈 AI 추천 API)
-  □  상품 리뷰 & 평점 (사진 리뷰·사이즈 만족도)
-  □  쿠폰 & 포인트 시스템
-  □  멤버십 등급 (일반·실버·골드·VIP)
-  □  브랜드관 페이지
-  □  Storybook 컴포넌트 문서화
+  [ ]  AI 개인화 추천 피드 (오픈 AI 추천 API)
+  [ ]  상품 리뷰 & 평점 (사진 리뷰·사이즈 만족도)
+  [ ]  쿠폰 & 포인트 시스템
+  [ ]  멤버십 등급 (일반·실버·골드·VIP)
+  [ ]  브랜드관 페이지
+  [ ]  Storybook 컴포넌트 문서화
 
-2026 Q4  ── Phase 3 · Advanced
-  □  AR Try-On (가상 착용 시뮬레이션)
-  □  라이브 쇼핑 연동
-  □  소셜 피드 (유저 스타일 공유)
-  □  i18next 다국어 지원 (글로벌 배송 대응)
+  [ ]  AR Try-On (가상 착용 시뮬레이션)
+  [ ]  라이브 쇼핑 연동
+  [ ]  소셜 피드 (유저 스타일 공유)
+  [ ]  i18next 다국어 지원 (글로벌 배송 대응)
 ```
 
 ---
