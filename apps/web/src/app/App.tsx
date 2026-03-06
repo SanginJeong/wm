@@ -10,6 +10,13 @@ const App = () => {
         <Route path="/category/:slug" element={<>카테고리</>} />
         <Route path="/search" element={<>검색 결과</>} />
         <Route path="/product/:id" element={<>상품 상세</>} />
+        <Route path="/cart" element={<>장바구니</>} />
+
+        <Route path="/order">
+          <Route index element={<>주문 페이지</>} />
+          <Route path="payment" element={<>결제 페이지</>} />
+          <Route path="complete" element={<>주문 완료</>} />
+        </Route>
 
         <Route path="/mypage" element={<>마이페이지 레이아웃</>}>
           <Route index element={<>대시보드</>} />
