@@ -123,15 +123,18 @@ wondermall/
 │   └── web/                          # 메인 React 앱 (Vite + PWA)
 │       ├── src/
 │       │   ├── app/                  # 앱 진입점, 라우터 설정
-│       │   ├── pages/                # 페이지 단위 컴포넌트
-│       │   │   ├── home/
-│       │   │   ├── category/
-│       │   │   ├── product/
-│       │   │   ├── search/
-│       │   │   ├── cart/
-│       │   │   ├── order/
-│       │   │   ├── mypage/
-│       │   │   └── auth/
+│       │   ├── components/           # 앱 전용 공용 컴포넌트
+│       │   │   └── layout/           # Header, Footer, Layout (Outlet 래퍼)
+│       │   ├── pages/                # 페이지 단위 컴포넌트 (라우트 1:1 대응)
+│       │   │   ├── home/             # /
+│       │   │   ├── category/         # /category/:slug
+│       │   │   ├── product/          # /product/:id
+│       │   │   ├── search/           # /search
+│       │   │   ├── cart/             # /cart
+│       │   │   ├── order/            # /order, /order/complete
+│       │   │   ├── mypage/           # /mypage/*
+│       │   │   ├── auth/             # /auth/*
+│       │   │   └── faq/              # /FAQ
 │       │   ├── features/             # 도메인별 기능 모듈
 │       │      ├── auth/
 │       │       │   ├── components/
