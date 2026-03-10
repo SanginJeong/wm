@@ -37,6 +37,7 @@ If no domain is provided, ask the user which domain to generate.
 3. `apps/api/src/services/{domain}.service.ts`
    - All business logic here
    - Mongoose queries
+   - **IDOR 방지 (필수)**: cart, addresses, orders, wishlist, users/me의 모든 조회·수정·삭제 쿼리는 반드시 `{ _id: id, userId: req.user.id }` 형태로 userId를 조건에 포함 — userId 없이 `:id`/:productId 단독 조회 금지
    - For payments/confirm: compare `order.finalAmount` with toss amount, throw if mismatch
 
 4. Register the new route in `apps/api/src/app.ts` if not already registered.

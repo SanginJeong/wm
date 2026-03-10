@@ -48,9 +48,14 @@ apps/api/src/
 
 ## Collections
 - users: email/passwordHash/provider/providerId/role/points
-- refreshTokens: userId/tokenHash/expiresAt (TTL index)
+  - `email`: sparse unique index (local 필수, OAuth 전용은 생략 가능)
+  - `{ provider, providerId }`: compound unique index (OAuth 업서트 중복 방지)
+- refreshTokens: userId/jti(unique)/tokenHash(bcrypt)/expiresAt
+  - TTL index on expiresAt, unique index on jti
 - carts: userId(unique)/items[]
 - addresses: userId/label/recipient/phone/zipCode/address1/address2/isDefault
+  - **Partial unique index**: `{ userId: 1, isDefault: 1 }` where `isDefault: true` → 사용자당 기본 배송지 1개 보장
+  - 새 기본 배송지 설정 시 기존 isDefault=true를 false로 변경 후 저장 (순차 처리)
 - orders: orderNumber/userId/items[]/shippingAddress/status/amounts/trackingNumber
 - payments: orderId/userId/paymentKey/method/amount/status/tossResponse
 - wishlists: userId/productId/productName/productImage/price
@@ -75,4 +80,4 @@ apps/api/src/
 
 ## Frontend Connection
 - packages/api/src/client.ts의 axios 인터셉터에서 401 수신 시 /api/auth/refresh 자동 호출
-- CORS는 프론트 도메인만 허용
+- CORS: `origin: CLIENT_ORIGIN, credentials: true` 필수 — credentials 없으면 프론트 withCredentials: true 요청에서 rt 쿠키가 전송되지 않아 /api/auth/refresh 동작 불가

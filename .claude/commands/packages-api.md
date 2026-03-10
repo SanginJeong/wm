@@ -31,8 +31,27 @@ packages/api/
 - `withCredentials: true` (for httpOnly RT cookie)
 - Request interceptor: attach `Authorization: Bearer {accessToken}` from in-memory store
 - Response interceptor:
-  - On 401: call `POST /api/auth/refresh`, get new accessToken, store it, retry original request once
-  - On second 401 (refresh failed): clear token, redirect to login
+  - On 401: refresh 재귀 방지를 위해 **별도의 bare axios 인스턴스**(`refreshClient`)로 `POST /api/auth/refresh` 호출 — 인터셉터 없는 인스턴스이므로 재진입 불가
+  - refresh 성공 시: 새 accessToken 저장 후 원본 요청을 새 토큰으로 1회 재시도
+  - refresh 실패(401) 또는 재시도 후 재실패 시: 토큰 초기화 후 로그인 페이지로 redirect
+  - `_retry` 플래그를 config에 추가해 동일 요청의 2회 재시도 방지
+  ```ts
+  // 구현 패턴
+  const refreshClient = axios.create({ baseURL, withCredentials: true }); // 인터셉터 없음
+
+  client.interceptors.response.use(null, async (error) => {
+    if (error.response?.status === 401 && !error.config._retry) {
+      error.config._retry = true;
+      const { data } = await refreshClient.post('/api/auth/refresh');
+      setAccessToken(data.data.accessToken);
+      error.config.headers['Authorization'] = `Bearer ${data.data.accessToken}`;
+      return client(error.config);
+    }
+    clearAccessToken();
+    window.location.href = '/login';
+    return Promise.reject(error);
+  });
+  ```
 
 ### `types.ts` — shared interfaces
 

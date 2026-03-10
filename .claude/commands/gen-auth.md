@@ -29,12 +29,18 @@ GET  /api/auth/google/callback  — exchange code → upsert user → issue toke
 
 - **Passwords**: bcrypt with saltRounds 12 (use `apps/api/src/utils/hash.ts`)
 - **Access Token**: JWT, 15 minutes expiry, in response body
-- **Refresh Token**: JWT, 7 days expiry
-  - Store as bcrypt hash in `refreshTokens` collection
-  - Send raw token as httpOnly, secure, sameSite=strict cookie named `rt`
+- **Refresh Token**: JWT with `jti` (UUID) claim, 7 days expiry
+  - `refreshTokens` 컬렉션에 `{ jti, tokenHash (bcrypt), userId, expiresAt }` 저장
+  - Send raw token as httpOnly cookie named `rt` with the following policy:
+    | 배포 토폴로지 | sameSite | Secure | 비고 |
+    |---|---|---|---|
+    | 동일 도메인 (e.g. web.foo.com / api.foo.com) | `lax` | true | 서브도메인은 same-site로 간주 |
+    | 다른 도메인 (e.g. vercel.app / railway.app) | `none` | true | HTTPS 필수, Secure 없으면 브라우저가 쿠키 거부 |
+    | 로컬 개발 (localhost) | `lax` | false | HTTP 허용 |
+  - 환경변수 `NODE_ENV`와 `COOKIE_SAME_SITE`로 런타임에 정책 주입, 하드코딩 금지
 - **Login rate limiting**: apply `loginRateLimiter` middleware (5 attempts per 15 minutes per IP)
 - **OAuth users**: provider = 'kakao' or 'google', no passwordHash, upsert by providerId
-- **Refresh endpoint**: read `rt` cookie → find matching hash in DB → if valid, delete old record, issue new RT (rotation), return new AT
+- **Refresh endpoint**: read `rt` cookie → JWT decode → extract `jti` → DB에서 `jti`로 레코드 조회 → `bcrypt.compare(rawToken, tokenHash)` 검증 → 유효하면 기존 레코드 삭제 후 새 RT 발급 (rotation), 새 AT 반환
 
 ### Response format
 

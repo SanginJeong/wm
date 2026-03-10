@@ -12,7 +12,10 @@ If no name is provided, ask the user which collection they want.
 ## Available collections and their schemas (from backend-developer agent)
 
 - **user**: email, passwordHash, provider ('local'|'kakao'|'google'), providerId, role ('user'|'admin'), points
-- **refreshToken**: userId (ref User), tokenHash, expiresAt — add TTL index on expiresAt
+  - `email`: sparse unique index — local 가입자는 필수, OAuth 전용 계정은 email 없을 수 있음
+  - `{ provider, providerId }`: compound unique index — OAuth 업서트 시 중복 계정 방지
+  - 동시 가입/업서트 race condition을 DB 레벨에서 차단
+- **refreshToken**: userId (ref User), jti (unique), tokenHash (bcrypt), expiresAt — TTL index on expiresAt, unique index on jti
 - **cart**: userId (unique, ref User), items[] { productId, productName, productImage, price, quantity }
 - **address**: userId (ref User), label, recipient, phone, zipCode, address1, address2, isDefault (boolean)
 - **order**: orderNumber (unique), userId (ref User), items[] { productId, productName, productImage, price, quantity }, shippingAddress { recipient, phone, zipCode, address1, address2 }, status ('pending'|'paid'|'shipped'|'delivered'|'cancelled'), amounts { subtotal, shipping, total }, finalAmount, trackingNumber
