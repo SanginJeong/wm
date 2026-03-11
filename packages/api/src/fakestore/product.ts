@@ -1,14 +1,14 @@
-import type { Product } from "@wondermall/types";
+import { ProductListSchema, ProductSchema } from "@wondermall/types";
 import { fakestoreClient } from "./client";
 
-export const getProducts = async (): Promise<Product[]> => {
-  const { data } = await fakestoreClient.get<Product[]>("/products");
-  return data;
+export const getProducts = async () => {
+  const { data } = await fakestoreClient.get("/products");
+  return ProductListSchema.parse(data);
 };
 
-export const getProduct = async (id: number): Promise<Product> => {
-  const { data } = await fakestoreClient.get<Product>(`/products/${id}`);
-  return data;
+export const getProduct = async (id: number) => {
+  const { data } = await fakestoreClient.get(`/products/${id}`);
+  return ProductSchema.parse(data);
 };
 
 export const getCategories = async (): Promise<string[]> => {
@@ -16,7 +16,8 @@ export const getCategories = async (): Promise<string[]> => {
   return data;
 };
 
-export const getProductsByCategory = async (category: string): Promise<Product[]> => {
-  const { data } = await fakestoreClient.get<Product[]>(`/products/category/${category}`);
-  return data;
+export const getProductsByCategory = async (category: string) => {
+  const encodedCategory = encodeURIComponent(category);
+  const { data } = await fakestoreClient.get(`/products/category/${encodedCategory}`);
+  return ProductListSchema.parse(data);
 };
