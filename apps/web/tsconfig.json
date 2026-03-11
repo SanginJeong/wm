@@ -3,7 +3,9 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@wondermall/api": ["../../packages/api/src/index.ts"],
+      "@wondermall/types": ["../../packages/types/src/index.ts"]
     },
     "noEmit": true
   },
