@@ -4,18 +4,10 @@ import { Response } from 'express';
 
 import User, { IUserDocument } from '../models/user.model';
 import RefreshToken from '../models/refreshToken.model';
-import { signAccessToken, signRefreshToken, verifyToken } from '../utils/jwt';
+import { signAccessToken, signRefreshToken, verifyRefreshToken } from '../utils/jwt';
 import { hashPassword, comparePassword } from '../utils/hash';
 
-interface TokenPayload {
-  id: string;
-  role: string;
-}
-
-interface RefreshPayload {
-  id: string;
-  jti: string;
-}
+type RefreshPayload = { id: string; jti: string };
 
 interface AuthResult {
   accessToken: string;
@@ -24,6 +16,10 @@ interface AuthResult {
     email: string | undefined;
     role: string;
   };
+}
+
+function isDuplicateKeyError(err: unknown): boolean {
+  return typeof err === 'object' && err !== null && (err as { code?: number }).code === 11000;
 }
 
 function setRefreshTokenCookie(res: Response, token: string): void {
@@ -66,15 +62,19 @@ export async function signup(
   password: string,
   res: Response,
 ): Promise<AuthResult> {
-  const existing = await User.findOne({ email });
-  if (existing) {
-    const err = new Error('Email already in use') as Error & { statusCode: number };
-    err.statusCode = 409;
+  const passwordHash = await hashPassword(password);
+
+  let user: IUserDocument;
+  try {
+    user = await User.create({ email, passwordHash, provider: 'local' });
+  } catch (err) {
+    if (isDuplicateKeyError(err)) {
+      const conflict = new Error('Email already in use') as Error & { statusCode: number };
+      conflict.statusCode = 409;
+      throw conflict;
+    }
     throw err;
   }
-
-  const passwordHash = await hashPassword(password);
-  const user = await User.create({ email, passwordHash, provider: 'local' });
 
   const { accessToken } = await issueTokenPair(user, res);
 
@@ -121,7 +121,7 @@ export async function logout(
   }
 
   try {
-    const decoded = verifyToken<RefreshPayload>(rt, process.env.JWT_REFRESH_SECRET ?? '');
+    const decoded = verifyRefreshToken(rt, process.env.JWT_REFRESH_SECRET ?? '');
     await RefreshToken.deleteOne({ jti: decoded.jti });
   } catch {
     // Token may be expired or invalid — still clear the cookie
@@ -146,7 +146,7 @@ export async function refresh(
 
   let payload: RefreshPayload;
   try {
-    payload = verifyToken<RefreshPayload>(rt, secret);
+    payload = verifyRefreshToken(rt, secret);
   } catch {
     throw makeUnauthorized();
   }
@@ -157,7 +157,12 @@ export async function refresh(
   const valid = await bcrypt.compare(rt, record.tokenHash);
   if (!valid) throw makeUnauthorized();
 
-  await RefreshToken.deleteOne({ jti: payload.jti });
+  const consumeResult = await RefreshToken.deleteOne({
+    _id: record._id,
+    jti: payload.jti,
+    tokenHash: record.tokenHash,
+  });
+  if (consumeResult.deletedCount !== 1) throw makeUnauthorized();
 
   const user = await User.findById(record.userId);
   if (!user) throw makeUnauthorized();
@@ -186,11 +191,22 @@ export async function handleOAuthCallback(
   email: string | undefined,
   res: Response,
 ): Promise<AuthResult> {
-  const user = await User.findOneAndUpdate(
-    { provider, providerId },
-    { $setOnInsert: { email, provider, providerId, role: 'user', points: 0 } },
-    { upsert: true, new: true },
-  );
+  let user;
+  try {
+    user = await User.findOneAndUpdate(
+      { provider, providerId },
+      { $setOnInsert: { email, provider, providerId, role: 'user', points: 0 } },
+      { upsert: true, new: true },
+    );
+  } catch (err) {
+    if (isDuplicateKeyError(err)) {
+      // 동일 이메일의 로컬 계정이 이미 존재하는 경우
+      const conflict = new Error('An account with this email already exists. Please log in with email/password.') as Error & { statusCode: number };
+      conflict.statusCode = 409;
+      throw conflict;
+    }
+    throw err;
+  }
 
   if (!user) {
     const err = new Error('OAuth user resolution failed') as Error & { statusCode: number };

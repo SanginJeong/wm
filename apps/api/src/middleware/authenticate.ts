@@ -1,10 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { verifyToken } from '../utils/jwt';
-
-interface AccessTokenPayload {
-  id: string;
-  role: string;
-}
+import { verifyAccessToken } from '../utils/jwt';
 
 export function authenticate(req: Request, res: Response, next: NextFunction): void {
   const authHeader = req.headers.authorization;
@@ -16,11 +11,14 @@ export function authenticate(req: Request, res: Response, next: NextFunction): v
 
   const token = authHeader.slice(7);
 
-  try {
-    const secret = process.env.JWT_ACCESS_SECRET;
-    if (!secret) throw new Error('JWT_ACCESS_SECRET is not defined');
+  const secret = process.env.JWT_ACCESS_SECRET;
+  if (!secret) {
+    next(new Error('JWT_ACCESS_SECRET is not defined'));
+    return;
+  }
 
-    const payload = verifyToken<AccessTokenPayload>(token, secret);
+  try {
+    const payload = verifyAccessToken(token, secret);
     req.user = { id: payload.id, role: payload.role };
     next();
   } catch {
