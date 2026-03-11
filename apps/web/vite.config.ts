@@ -14,6 +14,8 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
+      "@wondermall/api": path.resolve(__dirname, "../../packages/api/src/index.ts"),
+      "@wondermall/types": path.resolve(__dirname, "../../packages/types/src/index.ts"),
     },
   },
 });
