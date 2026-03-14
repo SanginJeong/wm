@@ -9,3 +9,4 @@ export { default as Button } from "./components/Button";
 export { default as Typography } from "./components/Typography";
 export { default as Input } from "./components/Input";
 export { default as IconLink } from "./components/IconLink/IconLink";
+export { default as IconButton } from "./components/IconButton";
