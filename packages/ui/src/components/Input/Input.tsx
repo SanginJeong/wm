@@ -29,11 +29,11 @@ const StyledInput = styled.input<{ error?: boolean }>`
   font-size: ${({ theme }) => theme.typography.fontSize.md};
   color: ${({ theme }) => theme.colors.gray[900]};
   background-color: ${({ theme }) => theme.colors.white};
-  border: 1.5px solid
-    ${({ theme, error }) => (error ? theme.colors.error : theme.colors.gray[300])};
+  border: 1.5px solid ${({ theme, error }) => (error ? theme.colors.error : theme.colors.gray[300])};
   border-radius: ${({ theme }) => theme.radii.md};
   width: 100%;
-  transition: border-color ${({ theme }) => theme.transitions.fast},
+  transition:
+    border-color ${({ theme }) => theme.transitions.fast},
     box-shadow ${({ theme }) => theme.transitions.fast};
   outline: none;
 
@@ -42,13 +42,11 @@ const StyledInput = styled.input<{ error?: boolean }>`
   }
 
   &:hover:not(:disabled) {
-    border-color: ${({ theme, error }) =>
-      error ? theme.colors.error : theme.colors.gray[400]};
+    border-color: ${({ theme, error }) => (error ? theme.colors.error : theme.colors.gray[400])};
   }
 
   &:focus {
-    border-color: ${({ theme, error }) =>
-      error ? theme.colors.error : theme.colors.primary[500]};
+    border-color: ${({ theme, error }) => (error ? theme.colors.error : theme.colors.primary[500])};
     box-shadow: 0 0 0 3px
       ${({ theme, error }) =>
         error ? `${theme.colors.error}25` : `${theme.colors.primary[500]}25`};

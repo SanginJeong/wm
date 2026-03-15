@@ -5,9 +5,16 @@ import { HeartIcon, LogInIcon, ShoppingCartIcon, UserIcon } from "lucide-react";
 
 const StyledHeaderContent = styled.div`
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
   padding: ${({ theme }) => theme.spacing[4]} 0;
+  gap: ${({ theme }) => theme.spacing[2]};
+
+  @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
+    flex-wrap: nowrap;
+    gap: ${({ theme }) => theme.spacing[4]};
+  }
 `;
 
 const StyledTitle = styled(Link)`
@@ -17,10 +24,31 @@ const StyledTitle = styled(Link)`
   text-decoration: none;
 `;
 
+const StyledInputWrapper = styled.div`
+  order: 1;
+  width: 100%;
+
+  @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
+    order: 0;
+    width: auto;
+    flex: 1;
+    max-width: 400px;
+  }
+
+  @media (min-width: ${({ theme }) => theme.breakpoints.lg}) {
+    max-width: 600px;
+  }
+`;
+
 const StyledAuthActions = styled.div`
   display: flex;
   align-items: center;
   gap: ${({ theme }) => theme.spacing[1]};
+  margin-left: auto;
+
+  @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
+    margin-left: 0;
+  }
 `;
 
 const Header = () => {
@@ -29,7 +57,10 @@ const Header = () => {
   return (
     <StyledHeaderContent>
       <StyledTitle to="/">WonderMall</StyledTitle>
-      <Input placeholder="상품 검색..." />
+
+      <StyledInputWrapper>
+        <Input placeholder="상품 검색..." fullWidth />
+      </StyledInputWrapper>
 
       {isLoggedIn ? (
         <StyledAuthActions>
