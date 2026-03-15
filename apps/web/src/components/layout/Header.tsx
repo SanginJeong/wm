@@ -66,7 +66,7 @@ const Header = () => {
       {isLoggedIn ? (
         <StyledAuthActions>
           <IconLink aria-label="위시 리스트" to="/mypage/wishlist" icon={<HeartIcon />} />
-          <IconLink aria-label="장바구니" to="/mypage/cart" icon={<ShoppingCartIcon />} />
+          <IconLink aria-label="장바구니" to="/cart" icon={<ShoppingCartIcon />} />
           <IconLink aria-label="마이페이지" to="/mypage" icon={<UserIcon />} />
         </StyledAuthActions>
       ) : (
