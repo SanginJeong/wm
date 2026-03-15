@@ -12,8 +12,10 @@ const StyledIconButton = styled.button`
   padding: ${({ theme }) => theme.spacing[2]};
   border-radius: ${({ theme }) => theme.radii.full};
   transition: background-color ${({ theme }) => theme.transitions.base};
+  cursor: pointer;
 
   &:hover {
+    color: ${({ theme }) => theme.colors.white};
     background-color: ${({ theme }) => theme.colors.primary[300]};
   }
 `;
