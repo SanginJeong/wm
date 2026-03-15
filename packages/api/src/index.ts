@@ -1,1 +1,2 @@
-export * from './fakestore/product';
+export * from "./product";
+export * from "./auth";
