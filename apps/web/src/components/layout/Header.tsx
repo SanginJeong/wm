@@ -56,9 +56,7 @@ const Header = () => {
 
   return (
     <StyledHeaderContent>
-      <StyledTitle aria-label="제목" to="/">
-        WonderMall
-      </StyledTitle>
+      <StyledTitle to="/">WonderMall</StyledTitle>
 
       <StyledInputWrapper>
         <Input aria-label="상품 검색" placeholder="상품 검색..." fullWidth />
