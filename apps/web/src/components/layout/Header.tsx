@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import { Link } from "react-router";
-import { IconLink, Input, theme } from "@wondermall/ui";
+import { IconLink, Input } from "@wondermall/ui";
 import { HeartIcon, LogInIcon, ShoppingCartIcon, UserIcon } from "lucide-react";
 
 const StyledHeaderContent = styled.div`
