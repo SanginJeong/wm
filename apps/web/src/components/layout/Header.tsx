@@ -56,20 +56,22 @@ const Header = () => {
 
   return (
     <StyledHeaderContent>
-      <StyledTitle to="/">WonderMall</StyledTitle>
+      <StyledTitle aria-label="제목" to="/">
+        WonderMall
+      </StyledTitle>
 
       <StyledInputWrapper>
-        <Input placeholder="상품 검색..." fullWidth />
+        <Input aria-label="상품 검색" placeholder="상품 검색..." fullWidth />
       </StyledInputWrapper>
 
       {isLoggedIn ? (
         <StyledAuthActions>
-          <IconLink to="/mypage/wishlist" icon={<HeartIcon />} />
-          <IconLink to="/mypage/cart" icon={<ShoppingCartIcon />} />
-          <IconLink to="/mypage" icon={<UserIcon />} />
+          <IconLink aria-label="위시 리스트" to="/mypage/wishlist" icon={<HeartIcon />} />
+          <IconLink aria-label="장바구니" to="/mypage/cart" icon={<ShoppingCartIcon />} />
+          <IconLink aria-label="마이페이지" to="/mypage" icon={<UserIcon />} />
         </StyledAuthActions>
       ) : (
-        <IconLink to="/auth/login" icon={<LogInIcon />} />
+        <IconLink aria-label="로그인" to="/auth/login" icon={<LogInIcon />} />
       )}
     </StyledHeaderContent>
   );
