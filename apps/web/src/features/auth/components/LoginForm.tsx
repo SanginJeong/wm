@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 import { Button, Input } from "@wondermall/ui";
 import { KakaoIcon, GoogleIcon, StyledKakaoButton, StyledGoogleButton } from "./SocialLoginButtons";
+import { Link } from "react-router";
 
 const StyledForm = styled.form`
   display: flex;
@@ -30,7 +31,9 @@ const LoginForm = () => {
       <Input label="이메일" placeholder="Enter Email..." />
       <Input label="패스워드" placeholder="Enter Password..." />
       <Button variant="primary">로그인</Button>
-      <Button variant="outline">회원가입</Button>
+      <Button as={Link} to="/auth/signup" variant="outline">
+        회원가입
+      </Button>
       <StyledDivider>또는</StyledDivider>
       <StyledKakaoButton type="button">
         <KakaoIcon />
