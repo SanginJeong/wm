@@ -1,2 +1,2 @@
-export * from "./product";
-export * from "./auth";
+export * from "./product.api";
+export * from "./auth.api";
