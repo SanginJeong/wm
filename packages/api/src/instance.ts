@@ -53,7 +53,7 @@ backendInstance.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    if (error.response?.status !== 401 || originalRequest._retry) {
+    if (!originalRequest || error.response?.status !== 401 || originalRequest._retry) {
       return Promise.reject(error);
     }
 
@@ -77,7 +77,7 @@ backendInstance.interceptors.response.use(
       const { data } = await backendInstance.post<{
         success: boolean;
         data: { accessToken: string };
-      }>("/auth/refresh");
+      }>("/auth/refresh", undefined, { _retry: true } as any);
 
       const newToken = data.data.accessToken;
       _onRefreshed(newToken);
