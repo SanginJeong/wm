@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { ButtonHTMLAttributes } from "react";
+import { ButtonHTMLAttributes, ElementType } from "react";
 
 type ButtonVariant = "primary" | "secondary" | "outline" | "ghost";
 type ButtonSize = "sm" | "md" | "lg";
@@ -8,6 +8,8 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   variant?: ButtonVariant;
   size?: ButtonSize;
   fullWidth?: boolean;
+  as?: ElementType;
+  to?: string;
 };
 
 const StyledButton = styled.button<ButtonProps>`
@@ -95,8 +97,17 @@ const StyledButton = styled.button<ButtonProps>`
   }
 `;
 
-const Button = ({ variant = "primary", size = "md", fullWidth = false, ...props }: ButtonProps) => {
-  return <StyledButton variant={variant} size={size} fullWidth={fullWidth} {...props} />;
+const Button = ({
+  variant = "primary",
+  size = "md",
+  fullWidth = false,
+  as,
+  to,
+  ...props
+}: ButtonProps) => {
+  return (
+    <StyledButton as={as} to={to} variant={variant} size={size} fullWidth={fullWidth} {...props} />
+  );
 };
 
 export default Button;

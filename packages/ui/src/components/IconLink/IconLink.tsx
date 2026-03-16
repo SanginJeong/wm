@@ -7,7 +7,7 @@ type IconLinkProps = AnchorHTMLAttributes<HTMLAnchorElement> & {
   to?: string;
 };
 
-const StyledIconLink = styled.a`
+const StyledIconLink = styled.a<{ to?: string }>`
   display: inline-flex;
   align-items: center;
   color: inherit;
@@ -22,8 +22,12 @@ const StyledIconLink = styled.a`
   }
 `;
 
-const IconLink = ({ icon, ...props }: IconLinkProps) => {
-  return <StyledIconLink {...props}>{icon}</StyledIconLink>;
+const IconLink = ({ icon, as, to, ...props }: IconLinkProps) => {
+  return (
+    <StyledIconLink as={as} to={to} {...props}>
+      {icon}
+    </StyledIconLink>
+  );
 };
 
 export default IconLink;
