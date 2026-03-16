@@ -1,4 +1,5 @@
 import { Layout } from "@/components/layout";
+import Login from "@/pages/auth/login";
 import Home from "@/pages/home";
 import { Routes, Route } from "react-router";
 
@@ -26,7 +27,7 @@ const App = () => {
         </Route>
 
         <Route path="/auth">
-          <Route path="login" element={<>로그인</>} />
+          <Route path="login" element={<Login />} />
           <Route path="signup" element={<>회원가입</>} />
           <Route path="forgot-password" element={<>비밀번호 재설정</>} />
         </Route>

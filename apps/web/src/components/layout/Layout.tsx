@@ -44,7 +44,9 @@ const Layout = () => {
         </Container>
       </StyledHeader>
       <StyledMain>
-        <Outlet />
+        <Container>
+          <Outlet />
+        </Container>
       </StyledMain>
       <StyledFooter>
         <Container>

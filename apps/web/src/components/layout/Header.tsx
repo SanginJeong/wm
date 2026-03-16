@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 import { IconLink, Input } from "@wondermall/ui";
 import { HeartIcon, LogInIcon, ShoppingCartIcon, UserIcon } from "lucide-react";
 import { useAuthStore } from "@/features/auth/stores/useAuthStore";
@@ -54,14 +54,18 @@ const StyledAuthActions = styled.div`
 
 const Header = () => {
   const { isLoggedIn } = useAuthStore();
+  const location = useLocation();
+  const isPathnameHasAuth = location.pathname.startsWith("/auth");
 
   return (
     <StyledHeaderContent>
       <StyledTitle to="/">WonderMall</StyledTitle>
 
-      <StyledInputWrapper>
-        <Input aria-label="상품 검색" placeholder="상품 검색..." fullWidth />
-      </StyledInputWrapper>
+      {!isPathnameHasAuth && (
+        <StyledInputWrapper>
+          <Input aria-label="상품 검색" placeholder="상품 검색..." fullWidth />
+        </StyledInputWrapper>
+      )}
 
       {isLoggedIn ? (
         <StyledAuthActions>
