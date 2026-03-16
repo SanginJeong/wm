@@ -1,1 +1,2 @@
-export * from "./product/product.type";
+export * from "./product/product.types";
+export * from "./auth/auth.types";

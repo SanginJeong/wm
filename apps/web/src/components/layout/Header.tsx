@@ -2,6 +2,7 @@ import styled from "@emotion/styled";
 import { Link } from "react-router";
 import { IconLink, Input } from "@wondermall/ui";
 import { HeartIcon, LogInIcon, ShoppingCartIcon, UserIcon } from "lucide-react";
+import { useAuthStore } from "@/features/auth/stores/useAuthStore";
 
 const StyledHeaderContent = styled.div`
   display: flex;
@@ -52,7 +53,7 @@ const StyledAuthActions = styled.div`
 `;
 
 const Header = () => {
-  const isLoggedIn = true;
+  const { isLoggedIn } = useAuthStore();
 
   return (
     <StyledHeaderContent>
