@@ -65,12 +65,12 @@ const Header = () => {
 
       {isLoggedIn ? (
         <StyledAuthActions>
-          <IconLink aria-label="위시 리스트" to="/mypage/wishlist" icon={<HeartIcon />} />
-          <IconLink aria-label="장바구니" to="/cart" icon={<ShoppingCartIcon />} />
-          <IconLink aria-label="마이페이지" to="/mypage" icon={<UserIcon />} />
+          <IconLink as={Link} to="/mypage/wishlist" aria-label="위시 리스트" icon={<HeartIcon />} />
+          <IconLink as={Link} to="/cart" aria-label="장바구니" icon={<ShoppingCartIcon />} />
+          <IconLink as={Link} to="/mypage" aria-label="마이페이지" icon={<UserIcon />} />
         </StyledAuthActions>
       ) : (
-        <IconLink aria-label="로그인" to="/auth/login" icon={<LogInIcon />} />
+        <IconLink as={Link} to="/auth/login" aria-label="로그인" icon={<LogInIcon />} />
       )}
     </StyledHeaderContent>
   );
