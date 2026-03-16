@@ -1,7 +1,6 @@
 import axios from "axios";
 
 export const backendInstance = axios.create({
-  baseURL: "http://localhost:4000/api",
   withCredentials: true,
 });
 
@@ -13,11 +12,13 @@ let _getToken: TokenGetter = () => null;
 let _onRefreshed: RefreshedHandler = () => {};
 let _onUnauthorized: UnauthorizedHandler = () => {};
 
-export function configureBackendClient(options: {
+export function configureBackendInstance(options: {
+  baseURL: string;
   getToken: TokenGetter;
   onRefreshed: RefreshedHandler;
   onUnauthorized: UnauthorizedHandler;
 }) {
+  backendInstance.defaults.baseURL = options.baseURL;
   _getToken = options.getToken;
   _onRefreshed = options.onRefreshed;
   _onUnauthorized = options.onUnauthorized;
